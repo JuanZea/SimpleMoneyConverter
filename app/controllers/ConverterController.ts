@@ -10,6 +10,8 @@ export default {
         if (isValid) response = { [data.from]: data.amount, [data.to]: await convert(data) }
         else { status = 400; response.messages = errors }
 
+        if (data && data.date) response.date = data.date
+
         res.send(response).status(status)
     },
 

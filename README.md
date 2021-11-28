@@ -23,6 +23,8 @@ Once cloned/downloaded duplicate the .env.example file as .env and set:
 
 ``APP_FREE_API_KEY``: 4d8403db04106c231548
 
+``APP_MONTHLY_API_KEY``: 9f87c99cdd03edf7fa8e9d9d5ce0fe88
+
 Run the following commands from the console in the project folder:
 
 1. ``npm i``

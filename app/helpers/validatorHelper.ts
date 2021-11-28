@@ -29,6 +29,7 @@ export const validate = (raw: { from?: string, to?: string, amount?: string|numb
 export const validateCollection = (raw: { requests: { from: string, to: string, amount: number, date?: string }[] }): [boolean, any[]] => {
     const result: any[] = []
     let withoutErrors = true
+    if (raw.requests.length > 100) return [false, [["The limit of simultaneous consultations is 100"]]]
     raw.requests.forEach(request => {
         const [isValid, data, errors] = validate(request)
         if (isValid) result.push(data)

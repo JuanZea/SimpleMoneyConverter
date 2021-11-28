@@ -27,6 +27,7 @@ jobs:
         run: npm t
         env:
           APP_FREE_API_KEY: ${{ secrets.APP_FREE_API_KEY }}
+          APP_MONTHLY_API_KEY: ${{ secrets.APP_MONTHLY_API_KEY }}
       - name: Codecov
         uses: codecov/codecov-action@v2.1.0
         with:

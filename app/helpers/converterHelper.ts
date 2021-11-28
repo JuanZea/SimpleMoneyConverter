@@ -4,6 +4,9 @@ import axios from "axios"
 const freeApiUrl = process.env.APP_FREE_API_URL
 const freeApiKey = process.env.APP_FREE_API_KEY
 
+const monthlyApiUrl = process.env.APP_MONTHLY_API_URL
+const monthlyApiKey = process.env.APP_MONTHLY_API_KEY
+
 export const convert = async (data: { from: string, to: string, amount: number, date?: string }): Promise<number> => {
     if (data.date) return convertWithDate({from: data.from, to: data.to, amount: data.amount, date: data.date})
     else return convertWithoutDate(data)
@@ -16,6 +19,7 @@ export const convertCollection = async (isValid: boolean, data: { from: string, 
             [request.from]: request.amount,
             [request.to]: await convert(request)
         })
+        if (request.date) results.at(-1).date = request.date
     }
     else {
         for (const request of data) {
@@ -24,6 +28,7 @@ export const convertCollection = async (isValid: boolean, data: { from: string, 
                     [request.from]: request.amount,
                     [request.to]: await convert(request)
                 })
+                if (request.date) results.at(-1).date = request.date
             }
             else results.push(request)
         }
@@ -31,8 +36,9 @@ export const convertCollection = async (isValid: boolean, data: { from: string, 
     return results
 }
 
-const convertWithDate = (data: { from: string, to: string, amount: number, date: string }): number => {
-    return 12345
+const convertWithDate = async (data: { from: string, to: string, amount: number, date: string }): Promise<number> => {
+    const rate = await axios.get(`${monthlyApiUrl}${data.date}?access_key=${monthlyApiKey}&format=1`)
+    return (rate.data.rates[data.to]/rate.data.rates[data.from]) * data.amount
 }
 
 const convertWithoutDate = async (data: { from: string, to: string, amount: number }): Promise<number> => {

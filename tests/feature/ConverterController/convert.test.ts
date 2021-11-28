@@ -112,12 +112,19 @@ describe('Converter Controller', () => {
                         {
                             "from": 'COP',
                             "to": 'MXN',
-                            "amount": 5000
+                            "amount": 5000,
+                            "date": '2019-07-15'
+                        },
+                        {
+                            "from": 'COP',
+                            "to": 'MXN',
+                            "amount": 5000,
+                            "date": '2019-99-99'
                         }
                     ]
                 })
 
-            expect(Object.keys(response.body['results']).length).toEqual(8)
+            expect(Object.keys(response.body['results']).length).toEqual(9)
             expect(response.body['results'][0]).toEqual(["The 'from' param is required", "The 'from' currency is invalid or not supported"])
             expect(response.body['results'][1]).toEqual(["The 'to' param is required", "The 'to' currency is invalid or not supported"])
             expect(response.body['results'][2]).toEqual(["The 'amount' param is invalid"])
@@ -125,23 +132,65 @@ describe('Converter Controller', () => {
             expect(response.body['results'][4]).toEqual(["The 'to' currency is invalid or not supported"])
             expect(response.body['results'][5]).toEqual(["The amount must be positive"])
             expect(response.body['results'][6]).toEqual(["The 'amount' param is invalid"])
-            expect(Object.keys(response.body['results'][7]).length).toEqual(2)
+            expect(Object.keys(response.body['results'][7]).length).toEqual(3)
+            expect(response.body['results'][8]).toEqual(["The date is invalid"])
+        })
+
+        it('Should not receive more than 100 requests', async () => {
+            const request = {
+                "from": 'COP',
+                "to": 'MXN',
+                "amount": 5000
+            }
+
+            const requests = []
+
+            for (let i = 0; i < 101; i++) {
+                requests.push(request)
+            }
+
+            let response = await agent(app).post(`${BASE_URL}multi-convert`)
+                .send({requests})
+
+            expect(response.body['results'][0]).toEqual(["The limit of simultaneous consultations is 100"])
         })
     })
 
-    // describe('Using a date', () => {
-    //     it('Should do a simple conversion', async () => {
-    //         const response = await agent(app).get(`${BASE_URL}convert?${SINGLE_QUERY}&date=01-29-2000`)
-    //
-    //         expect(response.body).toMatchSchema({
-    //             properties: {
-    //                 result: {
-    //                     type: 'object',
-    //                 },
-    //             },
-    //             required: ['result'],
-    //         })
-    //     })
-    // })
+    describe('Using a date', () => {
+        it('Should do a simple conversion', async () => {
+            const response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}/${AMOUNT}/2019-07-15`)
+            expect(Object.keys(response.body).length).toEqual(3)
+        })
+
+        it('Should do a multiple conversion', async () => {
+            const response = await agent(app)
+                .post(`${BASE_URL}multi-convert`)
+                .send({
+                    requests: [
+                        {
+                            "from": 'COP',
+                            "to": 'MXN',
+                            "amount": 10000,
+                            "date": '2019-07-15'
+                        },
+                        {
+                            "from": 'CLP',
+                            "to": 'USD',
+                            "amount": 15000,
+                            "date": '2021-05-11'
+                        },
+                        {
+                            "from": 'ARS',
+                            "to": 'BOB',
+                            "amount": 800,
+                            "date": '2012-02-25'
+                        }
+                    ]
+                })
+
+            expect(Object.keys(response.body['results']).length).toEqual(3)
+            expect(Object.keys(response.body['results'][0]).length).toEqual(3)
+        })
+    })
 
 });
