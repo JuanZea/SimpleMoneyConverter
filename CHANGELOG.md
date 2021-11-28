@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Code coverage added
 - Typescript lint validation added
 - Simple convert feature added
+- Multiple convert feature added
+- SonarCloud added
 
 
 
