@@ -1,7 +1,15 @@
 import { app } from "./app";
 const port = process.env.SERVER_PORT
 
-app.listen( port, (): void => {
+const server = app.listen(port, (): void => {
     // tslint:disable-next-line:no-console
-    console.log( `Server started on port: ${ port }` )
-} );
+    console.log(`Server started on port: ${port}`)
+
+    if (process.env.NODE_ENV === 'test') {
+        server.close(() => {
+            console.log('Server closed');
+        });
+    }
+});
+
+export { app as accessApp }
