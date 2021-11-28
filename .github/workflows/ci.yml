@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: codecov/codecov-action@v2
       - name: Set up Node
         uses: actions/setup-node@v2.4.1
         with:
@@ -24,3 +25,6 @@ jobs:
         run: npm t
       - name: Codecov
         uses: codecov/codecov-action@v2.1.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
