@@ -1,6 +1,7 @@
-# SimpleMoneyConverter
+# Simple Money Converter
 
 It is simply a currency converter.
+![Banner](resources/index.png "Banner")
 
 # Usage
 Example of simple conversion without date:
@@ -11,14 +12,16 @@ Example of simple conversion without date:
 ```json
 {
     "COP": 4000,
-    "USD": 1.01,
+    "USD": 1.01
 }
 ```
 
 # Installation
 Just clone de repository or download [here](#).
 
-Once cloned/downloaded duplicate the .env.example file as .env
+Once cloned/downloaded duplicate the .env.example file as .env and set:
+
+``APP_FREE_API_KEY``: 4d8403db04106c231548
 
 Run the following commands from the console in the project folder:
 

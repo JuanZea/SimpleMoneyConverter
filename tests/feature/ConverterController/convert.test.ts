@@ -4,21 +4,9 @@ import { matchers } from 'jest-json-schema';
 expect.extend(matchers);
 
 const BASE_URL = '/api/'
-const params: {
-    [index: string]: string,
-    from: string,
-    to: string,
-    amount: string
-} = {
-    from: 'COP',
-    to: 'USD',
-    amount: '4000'
-}
-const SINGLE_QUERY = Object.keys(params).map(key => {
-    return key + '=' + params[key]
-}).join('&');
-
-const MULTI_QUERY = ''
+const FROM = 'COP'
+const TO = 'USD'
+const AMOUNT = '4000'
 
 describe('Converter Controller', () => {
     it('The endpoint is enabled', async () => {
@@ -30,9 +18,9 @@ describe('Converter Controller', () => {
 
     describe('Without a date', () => {
         it('Should do a simple conversion', async () => {
-            const response = await agent(app).get(`${BASE_URL}convert?${SINGLE_QUERY}`)
+            const response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}/${AMOUNT}`)
 
-            expect(Object.keys(response.body['result']).length).toEqual(2)
+            expect(Object.keys(response.body).length).toEqual(2)
         })
 
         // it('Should do a multiple conversion', async () => {
