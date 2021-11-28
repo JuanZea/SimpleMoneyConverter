@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import currencies from "../fixtures/currencies"
-import {type} from "os";
 
 const applyRules = (raw: { from?: string, to?: string, amount?: number, date?: string }, errors: string[]) => {
     if (!raw.from) errors.push("The 'from' param is required")
