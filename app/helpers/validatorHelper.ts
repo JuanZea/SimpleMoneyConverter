@@ -13,7 +13,7 @@ const applyRules = (raw: { from?: string, to?: string, amount?: number, date?: s
 }
 
 export const validate = (raw: { from?: string, to?: string, amount?: string|number, date?: string }): [boolean, { from: string, to: string, amount: number, date?: string }, string[]] => {
-    let errors: string[] = []
+    const errors: string[] = []
     const cleanRaw: { from: string, to: string, amount: number, date?: string } = {
         from: raw.from,
         to: raw.to,

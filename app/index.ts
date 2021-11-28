@@ -7,6 +7,7 @@ const server = app.listen(port, (): void => {
 
     if (process.env.NODE_ENV === 'test') {
         server.close(() => {
+            // tslint:disable-next-line:no-console
             console.log('Server closed');
         });
     }

@@ -14,7 +14,7 @@ export default {
     },
 
     multiConvert: async (req: Request, res: Response) => {
-        let status: number = 200
+        const status: number = 200
         const response: {[index: string]: object[], results: object[] } = { results: [] }
 
         const [isValid, data] = validateCollection(req.body)
