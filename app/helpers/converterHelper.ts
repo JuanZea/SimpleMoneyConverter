@@ -11,7 +11,7 @@ export const validate = (data: { from?: string, to?: string, amount?: number, da
     if (!currencies.includes(data.from)) return "The 'from' currency is invalid or not supported"
     if (!currencies.includes(data.to)) return "The 'to' currency is invalid or not supported"
     if (data.amount < 0) return 'The amount must be positive'
-    if (data.date && !/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/.test(data.date)) return 'The date is invalid'
+    if (data.date && !/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12]\d|3[01])$/.test(data.date)) return 'The date is invalid'
 }
 
 export const convert = async (data: { from: string, to: string, amount: number, date?: string }): Promise<number> => {
