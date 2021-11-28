@@ -19,8 +19,30 @@ describe('Converter Controller', () => {
     describe('Without a date', () => {
         it('Should do a simple conversion', async () => {
             const response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}/${AMOUNT}`)
-
             expect(Object.keys(response.body).length).toEqual(2)
+        })
+
+        it('Should not do a conversion with invalid data', async () => {
+            let response = await agent(app).get(`${BASE_URL}convert/${undefined}/${TO}/${AMOUNT}`)
+            expect(response.body).toEqual({"message": "The 'from' currency is invalid or not supported"})
+
+            response = await agent(app).get(`${BASE_URL}convert/${FROM}/${undefined}/${AMOUNT}`)
+            expect(response.body).toEqual({"message": "The 'to' currency is invalid or not supported"})
+
+            response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}/${undefined}`)
+            expect(response.body).toEqual({"message": "The 'amount' param is required"})
+
+            response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}/${-5}`)
+            expect(response.body).toEqual({"message": "The amount must be positive"})
+
+            response = await agent(app).get(`${BASE_URL}convert/${FROM}/${TO}`)
+            expect(response.body).toEqual({"message": "The 'amount' param is required"})
+
+            response = await agent(app).get(`${BASE_URL}convert/${FROM}`)
+            expect(response.body).toEqual({"message": "The 'to' param is required"})
+
+            response = await agent(app).get(`${BASE_URL}convert`)
+            expect(response.body).toEqual({"message": "The 'from' param is required"})
         })
 
         // it('Should do a multiple conversion', async () => {

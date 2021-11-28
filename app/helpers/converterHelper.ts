@@ -4,9 +4,12 @@ import currencies from "../fixtures/currencies"
 const freeApiUrl = process.env.APP_FREE_API_URL
 const freeApiKey = process.env.APP_FREE_API_KEY
 
-export const validate = (data: { from: string, to: string, amount: number, date?: string }): string => {
+export const validate = (data: { from?: string, to?: string, amount?: number, date?: string }): string => {
+    if (!data.from) return "The 'from' param is required"
+    if (!data.to) return "The 'to' param is required"
+    if (!data.amount) return "The 'amount' param is required"
     if (!currencies.includes(data.from)) return "The 'from' currency is invalid or not supported"
-    if (!currencies.includes(data.from)) return "The 'to' currency is invalid or not supported"
+    if (!currencies.includes(data.to)) return "The 'to' currency is invalid or not supported"
     if (data.amount < 0) return 'The amount must be positive'
     if (data.date && !/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/.test(data.date)) return 'The date is invalid'
 }
