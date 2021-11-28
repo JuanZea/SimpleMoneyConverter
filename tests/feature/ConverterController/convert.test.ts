@@ -117,7 +117,7 @@ describe('Converter Controller', () => {
                     ]
                 })
 
-            expect(Object.keys(response.body['results']).length).toEqual(7)
+            expect(Object.keys(response.body['results']).length).toEqual(8)
             expect(response.body['results'][0]).toEqual(["The 'from' param is required", "The 'from' currency is invalid or not supported"])
             expect(response.body['results'][1]).toEqual(["The 'to' param is required", "The 'to' currency is invalid or not supported"])
             expect(response.body['results'][2]).toEqual(["The 'amount' param is invalid"])
