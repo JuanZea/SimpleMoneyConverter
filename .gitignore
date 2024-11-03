@@ -1,0 +1,14 @@
+# Environment files
+.env
+
+# IDE files
+.idea
+
+# Node modules
+node_modules
+
+# Dist
+dist
+
+# Coverage
+coverage
